@@ -1,0 +1,198 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="AnketDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Anketler">
+          <Key>
+            <PropertyRef Name="AnkId" />
+          </Key>
+          <Property Name="AnkId" Type="int" Nullable="false" />
+          <Property Name="AnkKatId" Type="int" Nullable="false" />
+          <Property Name="AnkAdi" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Kategori">
+          <Key>
+            <PropertyRef Name="KatId" />
+          </Key>
+          <Property Name="KatId" Type="int" Nullable="false" />
+          <Property Name="KatAdi" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Sorular">
+          <Key>
+            <PropertyRef Name="SorId" />
+          </Key>
+          <Property Name="SorId" Type="int" Nullable="false" />
+          <Property Name="SorAnkId" Type="int" Nullable="false" />
+          <Property Name="1.Soru" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="2.Soru" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="3.Soru" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Anketler_ToKategori">
+          <End Role="Kategori" Type="Self.Kategori" Multiplicity="1" />
+          <End Role="Anketler" Type="Self.Anketler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kategori">
+              <PropertyRef Name="KatId" />
+            </Principal>
+            <Dependent Role="Anketler">
+              <PropertyRef Name="AnkKatId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sorular_ToAnketler">
+          <End Role="Anketler" Type="Self.Anketler" Multiplicity="1" />
+          <End Role="Sorular" Type="Self.Sorular" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Anketler">
+              <PropertyRef Name="AnkId" />
+            </Principal>
+            <Dependent Role="Sorular">
+              <PropertyRef Name="SorAnkId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AnketDBModelStoreContainer">
+          <EntitySet Name="Anketler" EntityType="Self.Anketler" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Kategori" EntityType="Self.Kategori" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sorular" EntityType="Self.Sorular" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Anketler_ToKategori" Association="Self.FK_Anketler_ToKategori">
+            <End Role="Kategori" EntitySet="Kategori" />
+            <End Role="Anketler" EntitySet="Anketler" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sorular_ToAnketler" Association="Self.FK_Sorular_ToAnketler">
+            <End Role="Anketler" EntitySet="Anketler" />
+            <End Role="Sorular" EntitySet="Sorular" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="AnketDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Anketler">
+          <Key>
+            <PropertyRef Name="AnkId" />
+          </Key>
+          <Property Name="AnkId" Type="Int32" Nullable="false" />
+          <Property Name="AnkKatId" Type="Int32" Nullable="false" />
+          <Property Name="AnkAdi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Kategori" Relationship="Self.FK_Anketler_ToKategori" FromRole="Anketler" ToRole="Kategori" />
+          <NavigationProperty Name="Sorular" Relationship="Self.FK_Sorular_ToAnketler" FromRole="Anketler" ToRole="Sorular" />
+        </EntityType>
+        <EntityType Name="Kategori">
+          <Key>
+            <PropertyRef Name="KatId" />
+          </Key>
+          <Property Name="KatId" Type="Int32" Nullable="false" />
+          <Property Name="KatAdi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Anketler" Relationship="Self.FK_Anketler_ToKategori" FromRole="Kategori" ToRole="Anketler" />
+        </EntityType>
+        <EntityType Name="Sorular">
+          <Key>
+            <PropertyRef Name="SorId" />
+          </Key>
+          <Property Name="SorId" Type="Int32" Nullable="false" />
+          <Property Name="SorAnkId" Type="Int32" Nullable="false" />
+          <Property Name="C1_Soru" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="C2_Soru" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="C3_Soru" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Anketler" Relationship="Self.FK_Sorular_ToAnketler" FromRole="Sorular" ToRole="Anketler" />
+        </EntityType>
+        <Association Name="FK_Anketler_ToKategori">
+          <End Role="Kategori" Type="Self.Kategori" Multiplicity="1" />
+          <End Role="Anketler" Type="Self.Anketler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kategori">
+              <PropertyRef Name="KatId" />
+            </Principal>
+            <Dependent Role="Anketler">
+              <PropertyRef Name="AnkKatId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sorular_ToAnketler">
+          <End Role="Anketler" Type="Self.Anketler" Multiplicity="1" />
+          <End Role="Sorular" Type="Self.Sorular" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Anketler">
+              <PropertyRef Name="AnkId" />
+            </Principal>
+            <Dependent Role="Sorular">
+              <PropertyRef Name="SorAnkId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AnketDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Anketler" EntityType="Self.Anketler" />
+          <EntitySet Name="Kategori" EntityType="Self.Kategori" />
+          <EntitySet Name="Sorular" EntityType="Self.Sorular" />
+          <AssociationSet Name="FK_Anketler_ToKategori" Association="Self.FK_Anketler_ToKategori">
+            <End Role="Kategori" EntitySet="Kategori" />
+            <End Role="Anketler" EntitySet="Anketler" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sorular_ToAnketler" Association="Self.FK_Sorular_ToAnketler">
+            <End Role="Anketler" EntitySet="Anketler" />
+            <End Role="Sorular" EntitySet="Sorular" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="AnketDBModelStoreContainer" CdmEntityContainer="AnketDBEntities">
+          <EntitySetMapping Name="Anketler">
+            <EntityTypeMapping TypeName="AnketDBModel.Anketler">
+              <MappingFragment StoreEntitySet="Anketler">
+                <ScalarProperty Name="AnkId" ColumnName="AnkId" />
+                <ScalarProperty Name="AnkKatId" ColumnName="AnkKatId" />
+                <ScalarProperty Name="AnkAdi" ColumnName="AnkAdi" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Kategori">
+            <EntityTypeMapping TypeName="AnketDBModel.Kategori">
+              <MappingFragment StoreEntitySet="Kategori">
+                <ScalarProperty Name="KatId" ColumnName="KatId" />
+                <ScalarProperty Name="KatAdi" ColumnName="KatAdi" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sorular">
+            <EntityTypeMapping TypeName="AnketDBModel.Sorular">
+              <MappingFragment StoreEntitySet="Sorular">
+                <ScalarProperty Name="SorId" ColumnName="SorId" />
+                <ScalarProperty Name="SorAnkId" ColumnName="SorAnkId" />
+                <ScalarProperty Name="C1_Soru" ColumnName="1.Soru" />
+                <ScalarProperty Name="C2_Soru" ColumnName="2.Soru" />
+                <ScalarProperty Name="C3_Soru" ColumnName="3.Soru" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
